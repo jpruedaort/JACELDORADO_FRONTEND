@@ -60,7 +60,7 @@ export default function Landing() {
 			</div>
 			<div className='login-subscribe container'>
 				<div className='inside container'>
-					<h1>LogIn</h1>
+					<h1>Iniciar sesión</h1>
 					<form>
 						<div className='elements'>
 							<h3>Usuario</h3>
@@ -88,7 +88,7 @@ export default function Landing() {
 						<button onClick={(e) => handleSubmit(e)}> Ingresar</button>
 
 						<Link to='/subscribe'>
-							<p> No estas afiliado aun? Haz click aqui!</p>
+							<p> No estas registrado aun? Haz click aqui!</p>
 						</Link>
 					</form>
 				</div>
