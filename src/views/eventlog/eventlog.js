@@ -7,12 +7,19 @@ export default function EventLog() {
 	//Declaracion de variables que almacenan los datos de los formularios
 	const [userName, setUserName] = useState("");
 	const [userEmail, setUserEmail] = useState("");
-	const [eventData, SetEventData] = useState({evname: "", evfecha: "", evdescrip: "", evsalud: false , evambiente: false , evgenero:false, evdeporte:false});
+	const [eventData, SetEventData] = useState({
+		evname: "",
+		evfecha: "",
+		evdescrip: "",
+		evsalud: false,
+		evambiente: false,
+		evgenero: false,
+		evdeporte: false,
+	});
 	const { messData, setMessData } = useState({});
 
-
 	// Se obtiene el nombre del Cliente y el correo
-		//Se usa useEffect para solo invocar una vez
+	//Se usa useEffect para solo invocar una vez
 	useEffect(() => {
 		//Se extrae el token del local Storage
 
@@ -31,8 +38,10 @@ export default function EventLog() {
 		};
 		//se llama la funcion
 		name_request();
-	},[]);
+	}, []);
 
+
+	//Quitar el token de local storage y volvel a la pagina de inicio
 	let history = useHistory();
 	const logout = () => {
 		localStorage.removeItem("auth-token");
@@ -112,24 +121,22 @@ export default function EventLog() {
 		// document.getElementById("btncont").style.display = "block";
 		// document.getElementById("newEventWindows").style.display = "none";
 
-
 		// Funcion asincrona para enviar informacion al servidor y esperar respuesta
 		const sendEvent = async () => {
-
 			//Se estrucutra la informacion que se va a enviar
 			let data = {
 				token: localStorage.getItem("auth-token"),
 				form: {
-					evname:eventData.evname,
-					evfecha:eventData.evfecha,
-					evdescrip:eventData.evdescrip,
-					cominvi:{
-								evsalud:eventData.evsalud,
-								evambiente:eventData.evambiente,
-								evgenero:eventData.evgenero,
-								evdeporte:eventData.evdeporte,
-							}
-				}
+					evname: eventData.evname,
+					evfecha: eventData.evfecha,
+					evdescrip: eventData.evdescrip,
+					cominvi: {
+						evsalud: eventData.evsalud,
+						evambiente: eventData.evambiente,
+						evgenero: eventData.evgenero,
+						evdeporte: eventData.evdeporte,
+					},
+				},
 			};
 
 			//se envia la informacion
@@ -155,9 +162,9 @@ export default function EventLog() {
 				<div className='info-events'>
 					<ul>
 						<li>
-							<a onClick={() => logout()} href='#'>
-								Perfil
-							</a>
+						<Link to='/profile'>
+							<a> Perfil</a>
+						</Link>
 						</li>
 						<li>
 							<a onClick={() => logout()} href='#'>
@@ -297,6 +304,19 @@ export default function EventLog() {
 								<input
 									className='inputcom'
 									defaultChecked={false}
+									name='evdeporte'
+									onChange={(e) => handleEventForm(e)}
+									id='juventud'
+									type='checkbox'
+								></input>
+								<label className='labelcom' for='juventud'>
+									Juventud
+								</label>
+							</div>
+							<div className='labelContainer'>
+								<input
+									className='inputcom'
+									defaultChecked={false}
 									name='evgenero'
 									onChange={(e) => handleEventForm(e)}
 									id='salud'
@@ -379,6 +399,12 @@ export default function EventLog() {
 								<input className='inputcom' id='salud' type='checkbox'></input>
 								<label className='labelcom' for='salud'>
 									Genero
+								</label>
+							</div>
+							<div className='labelContainer'>
+								<input className='inputcom' id='juventud' type='checkbox'></input>
+								<label className='labelcom' for='juventud'>
+									Juventud
 								</label>
 							</div>
 						</div>

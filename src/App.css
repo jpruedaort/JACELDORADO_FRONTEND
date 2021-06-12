@@ -28,6 +28,7 @@
 	color: white;
 	text-decoration: none;
 	max-height: 4rem;
+	z-index: 3;
 }
 
 .navbar .name {
