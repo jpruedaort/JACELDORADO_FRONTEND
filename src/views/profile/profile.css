@@ -4,13 +4,16 @@
     padding: 0.5rem;
 }
 
+.profCont h1{
+    margin-bottom: 2rem;
+}
+
 .itemCell{
     display: flex;
     flex-direction: column;
-    margin-top: 2rem;
     height: 4rem;
     margin-bottom: 2rem;
-    z-index: -5;
+    z-index: 0;
 }
 
 .itemCell h4{
@@ -21,6 +24,9 @@
     width: 95%;
     height: 2rem;
     font-size: 1rem;
+    background-color: rgb(219, 219, 219);
+    border: none;
+    padding-left: 0.5rem;
 }
 
 .itemCell .inputline{
@@ -32,6 +38,10 @@
     height: 2rem;
 }
 
+.inputline{
+    background-color: transparent;
+}
+
 .inputline button{
     display: grid;
     place-content: center;
@@ -40,3 +50,30 @@
     background-color: transparent;
     border: none;
 }
+
+.usudesc{
+    font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 610px) {
+    .profCont{
+        margin-top: 16vh;
+    }
+  }
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}  
+
+#loadingSymbol{
+    animation: spin 4s infinite linear;
+    pointer-events: none;
+    
+    
+}
+
+.bi-pencil{
+   pointer-events: none;
+}
+

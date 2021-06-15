@@ -13,7 +13,7 @@
 }
 
 .navbar {
-  position: fixed;
+  position:fixed;
   top:0;
 	background-color: black;
 	height: 10rem;
@@ -28,7 +28,7 @@
 	color: white;
 	text-decoration: none;
 	max-height: 4rem;
-	z-index: 3;
+	z-index: -2;
 }
 
 .navbar .name {
