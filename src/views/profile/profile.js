@@ -5,10 +5,10 @@ import React, { useState, useEffect } from "react";
 
 export default function Profile() {
 	const [userName, setUserName] = useState("");
-	const [userEmail, setUserEmail] = useState("");
 	const [userInfo, setUserInfo]= useState("");
 	const [userUpdateInfo, setUserUpdateInfo]= useState("");
-	// const [updateState,setUpdateState]=useState(editSymbol);
+	const [updateState,setUpdateState]=useState(true);
+	const [saveState,setSaveState]=useState("Guardar")
 
 	//Simbolos para los botonos de actualizacion
 	var editSymbol = `<svg
@@ -76,7 +76,6 @@ export default function Profile() {
 				.then((res) => {
 					console.log("nombre int: ", res.data.payload);
 					setUserName(res.data.payload.name);
-					setUserEmail(res.data.payload.email);
 				});
 		};
 
@@ -115,32 +114,23 @@ export default function Profile() {
 		history.push("/");
 	};
 
-	//Este carga el simbolo de editar (INICIAL)
-	const changeSymbol = () => {
-		return (
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				width='20'
-				height='20'
-				fill='currentColor'
-				class='bi bi-pencil'
-				viewBox='0 0 16 16'
-			>
-				<path d='M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z' />
-			</svg>
-		);
-	};
 
-	//Se intenta guardar en la base de datos y se cambia el simbolo de los botones dependiendo de la respuesta del servidor
 
-	//LA variable step es para marcar el proceso por el cual va la actualizacion de los datos, comienza por 0 donde se habiilit el input y se cambia las acciones, en 1 se envia el contenido al servidor
-
+	//Este cambia el boton de editar a guardar y cancelar, adicionalmente abilita los campos que se pueden editar
 	const UpdateProcess = async(e) => {
+		setUpdateState(false);
+		 var el = document.getElementsByClassName("profileInput");
+		 for (var i=0;i<el.length; i++) {
+			 if (i!==3){
+			el[i].style.pointerEvents="auto";
+			el[i].style.border="solid";
+			el[i].style.backgroundColor="white";
+			 }
+		}
+
 
 			
 		
-		// document.getElementById(`${e.target.id}`).onClick=changeAtributteTest;
-		// document.getElementById(`${e.target.id}Inp`).removeAttribute("value");
 		// let data = {
 		// 	email: userEmail,
 		// 	fieldName: e.target.name,
@@ -168,10 +158,58 @@ export default function Profile() {
 	};
 
 
-	//Prueba de changeAttribute
-	const changeAtributteTest=()=>{
-		console.log("Esto Funciona")
-	}
+	//actualiza los valores
+
+	const updateProfile=async()=>{
+		//se comienza cambiando el estado en proceso
+		setSaveState("Guardando...")
+		//se obtienen los valores de los imputs
+		var nameVal= document.getElementById("nameBtnInp").value;
+		var apeVal= document.getElementById("apeBtnInp").value;
+		var fdnVal= document.getElementById("fnBtnInp").value;
+		var cedVal= document.getElementById("cedBtnInp").value;
+		var dirVal= document.getElementById("dirBtnInp").value;
+		var emailVal= document.getElementById("emailBtnInp").value;
+
+		let data = {
+			token: localStorage.getItem("auth-token"),
+			fields:{
+				nombres:nameVal,
+				apellidos:apeVal,
+				fdn:fdnVal,
+				cedula:cedVal,
+				dir:dirVal,
+				email:emailVal
+			}
+		};
+		await axios.post("http://localhost:3000/profile/update",data)
+			.then((res)=>{
+				if( res.data.status ==="positive" ){
+					setSaveState("Exito");
+					setTimeout(() => {
+						setSaveState("Guardar");
+						setUpdateState(true);
+						var el = document.getElementsByClassName("profileInput");
+						for (var i=0;i<el.length; i++) {
+							if (i!==3){
+						   el[i].style.pointerEvents="none";
+						   el[i].style.border="none";
+						   el[i].style.backgroundColor="rgb(219,219,219)";
+							}
+					   }
+					}, 3000);
+				}else if ( res.data.status ==="negative" ) {
+					setSaveState("Error");
+					setTimeout(() => {
+						setSaveState("Guardar");
+					}, 3000);
+				}
+			})
+
+	};
+
+
+
 
 
 	return (
@@ -198,7 +236,7 @@ export default function Profile() {
 				<h1>
 					<strong>Perfil</strong>
 					<div className='usudesc'>
-								Actualmente estas bajo el rol de {userInfo.rol}
+								Actualmente estas bajo el rol de  <strong>{userInfo.rol}</strong>
 					</div>
 				</h1>
 				<div className='profrow row'>
@@ -206,46 +244,32 @@ export default function Profile() {
 						<div className='itemCell'>
 							<h4> Nombres: </h4>
 							<div className='inputline'>
-								<input onChange={(e)=>handleChange(e)} name="nombres" id="nameBtnInp" defaultValue={userInfo.name} type='text'></input>
-								<button onClick={(e)=>UpdateProcess(e)} id='nameBtn'>
-									{changeSymbol()}
-								</button>
+								<input className="profileInput" onChange={(e)=>handleChange(e)} name="nombres" id="nameBtnInp" defaultValue={userInfo.name} type='text'></input>
+
 							</div>
 						</div>
 						<div className='itemCell'>
 							<h4> Apellidos: </h4>
 							<div className='inputline'>
-								<input name="apellidos" defaultValue={userInfo.apell} id="apeBtnInp" type='text'></input>
-								<button onClick={(e) => UpdateProcess(e)} id='apeBtn'>
-									{changeSymbol()}
-								</button>
+								<input className="profileInput" onChange={(e)=>handleChange(e)} name="apellidos" defaultValue={userInfo.apell} id="apeBtnInp" type='text'></input>
 							</div>
 						</div>
 						<div className='itemCell'>
 							<h4> Fecha de nacimineto: </h4>
 							<div className='inputline'>
-								<input name="fdn" defaultValue={userInfo.fdn} type='date' id="fnBtnInp"></input>
-								<button onClick={(e) => UpdateProcess(e)} id='fnBtn'>
-									{changeSymbol()}
-								</button>
+								<input className="profileInput" onChange={(e)=>handleChange(e)} name="fdn" defaultValue={userInfo.fdn} type='date' id="fnBtnInp"></input>
 							</div>
 						</div>
 						<div className='itemCell'>
 							<h4> Cedula: </h4>
 							<div className='inputline'>
-								<input name="cedula" defaultValue={userInfo.ced} type='text' id="cedBtnInp"></input>
-								<button onClick={(e) => UpdateProcess(e)} id='cedBtn'>
-									{changeSymbol()}
-								</button>
+								<input  className="profileInput" onChange={(e)=>handleChange(e)} name="cedula" defaultValue={userInfo.ced} type='text' id="cedBtnInp"></input>
 							</div>
 						</div>
 						<div className='itemCell'>
 							<h4>Dirección:</h4>
 							<div className='inputline'>
-								<input name="dir" defaultValue={userInfo.dir} type='text' id="dirBtnInp"></input>
-								<button onClick={(e) => UpdateProcess(e)} id='dirBtn'>
-									{changeSymbol()}
-								</button>
+								<input className="profileInput" onChange={(e)=>handleChange(e)} name="dir" defaultValue={userInfo.dir} type='text' id="dirBtnInp"></input>
 							</div>
 						</div>
 					</div>
@@ -253,13 +277,24 @@ export default function Profile() {
 						<div className='itemCell'>
 							<h4> Correo Electronico: </h4>
 							<div className='inputline'>
-								<input name="email" defaultValue={userInfo.email} type='email' id="emailBtnInp"></input>
-								<button onClick={(e) => UpdateProcess(e)} id='emailBtn'>
-									{changeSymbol()}
-								</button>
+								<input className="profileInput" onChange={(e)=>handleChange(e)} name="email" defaultValue={userInfo.email} type='email' id="emailBtnInp"></input>
 							</div>
 						</div>
 					</div>
+				</div>
+				<div className="btnRow row">
+					{updateState 
+					?
+					<div className="btncont">
+					<button onClick={()=>UpdateProcess()} id="editar"> Editar </button>
+					</div>
+					:
+					<div className="btncont">
+					<button onClick={()=>updateProfile()}id="guardar"> {saveState} </button>
+					<button id="cancelar"> Cancelar </button>
+					</div>
+					}
+					
 				</div>
 			</div>
 		</div>
