@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 
 export default function EventLog() {
 	//Declaracion de variables que almacenan los datos de los formularios
+	const [userRol, setUserRol] = useState("");
 	const [userName, setUserName] = useState("");
 	const [userEmail, setUserEmail] = useState("");
 	const [eventData, SetEventData] = useState({
@@ -34,12 +35,12 @@ export default function EventLog() {
 					console.log("nombre int: ", res.data.payload);
 					setUserName(res.data.payload.name);
 					setUserEmail(res.data.payload.email);
+					setUserRol(res.data.payload.rol);
 				});
 		};
 		//se llama la funcion
 		name_request();
 	}, []);
-
 
 	//Quitar el token de local storage y volvel a la pagina de inicio
 	let history = useHistory();
@@ -50,7 +51,7 @@ export default function EventLog() {
 
 	//manejar las entradas de usuario de la ventana de eventos
 	const handleEventForm = (e) => {
-		if (e.target.type == "checkbox") {
+		if (e.target.type === "checkbox") {
 			const { name, checked } = e.target;
 			SetEventData((prevState) => ({
 				...prevState,
@@ -68,7 +69,7 @@ export default function EventLog() {
 
 	//manejar las entradas de usuario de la ventana de Mensajes
 	const handleMessageForm = (e) => {
-		if (e.target.type == "checkbox") {
+		if (e.target.type === "checkbox") {
 			const { name, checked } = e.target;
 			setMessData((prevState) => ({
 				...prevState,
@@ -115,6 +116,7 @@ export default function EventLog() {
 		document.getElementById("newMessage").style.opacity = 0;
 	};
 
+
 	//Enviar los datos del formualario de EVENTOS nuevos al servidor
 	const btnSubmit = (e) => {
 		e.preventDefault();
@@ -156,15 +158,16 @@ export default function EventLog() {
 
 	return (
 		<div className='background-events'>
+			{console.log("hola hola: " , userRol)}
 			{/* Información en el navbar*/}
 			<div className='navbar-events'>
 				<div className='name-events'> ¡Hola {userName}! </div>
 				<div className='info-events'>
 					<ul>
 						<li>
-						<Link to='/profile'>
-							<a> Perfil</a>
-						</Link>
+							<Link to='/profile'>
+								<a> Perfil</a>
+							</Link>
 						</li>
 						<li>
 							<a onClick={() => logout()} href='#'>
@@ -202,8 +205,24 @@ export default function EventLog() {
 			</div>
 			{/* Contenedor de botones de agregar eventos y nueno mensaje */}
 			<div className='btnContainer' id='btncont'>
+				<Link to="/admin">
+					<div  className='add-btn'>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							width='35'
+							height='35'
+							fill='currentColor'
+							class='bi bi-gear-fill'
+							viewBox='0 0 16 16'
+						>
+							<path d='M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z' />
+						</svg>
+					</div>
+				</Link>
 				<div onClick={() => summonAdd()} id='addbtn' className='add-btn'>
-					<h1 className='plusign'>+</h1>
+					<h1 className='plusign'>
+						<strong>+</strong>
+					</h1>
 				</div>
 				<div onClick={() => summonMssg()} id='msgbtn' className='add-btn'>
 					<svg
@@ -402,7 +421,11 @@ export default function EventLog() {
 								</label>
 							</div>
 							<div className='labelContainer'>
-								<input className='inputcom' id='juventud' type='checkbox'></input>
+								<input
+									className='inputcom'
+									id='juventud'
+									type='checkbox'
+								></input>
 								<label className='labelcom' for='juventud'>
 									Juventud
 								</label>
