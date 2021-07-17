@@ -116,7 +116,6 @@ export default function EventLog() {
 		document.getElementById("newMessage").style.opacity = 0;
 	};
 
-
 	//Enviar los datos del formualario de EVENTOS nuevos al servidor
 	const btnSubmit = (e) => {
 		e.preventDefault();
@@ -158,7 +157,6 @@ export default function EventLog() {
 
 	return (
 		<div className='background-events'>
-			{console.log("hola hola: " , userRol)}
 			{/* Información en el navbar*/}
 			<div className='navbar-events'>
 				<div className='name-events'> ¡Hola {userName}! </div>
@@ -204,40 +202,60 @@ export default function EventLog() {
 				</table>
 			</div>
 			{/* Contenedor de botones de agregar eventos y nueno mensaje */}
-			<div className='btnContainer' id='btncont'>
-				<Link to="/admin">
-					<div  className='add-btn'>
+			{userRol === "Afiliado" ? (
+				<div></div>
+			) : (
+				<div className='btnContainer' id='btncont'>
+					<div onClick={() => summonAdd()} id='addbtn' className='add-btn'>
+						<h1 className='plusign'>
+							<strong>+</strong>
+						</h1>
+					</div>
+					<div onClick={() => summonMssg()} id='msgbtn' className='add-btn'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							width='35'
 							height='35'
 							fill='currentColor'
-							class='bi bi-gear-fill'
+							class='bi bi-mailbox'
 							viewBox='0 0 16 16'
 						>
-							<path d='M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z' />
+							<path d='M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3zm0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4zm2.646 1A3.99 3.99 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3H6.646z' />
+							<path d='M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146l-.853-.854zM5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0z' />
 						</svg>
 					</div>
-				</Link>
-				<div onClick={() => summonAdd()} id='addbtn' className='add-btn'>
-					<h1 className='plusign'>
-						<strong>+</strong>
-					</h1>
+					{userRol === "Admin" ? (
+						<Link to='/admin'>
+							<div className='add-btn'>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									width='35'
+									height='35'
+									fill='currentColor'
+									class='bi bi-gear-fill'
+									viewBox='0 0 16 16'
+								>
+									<path d='M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z' />
+								</svg>
+							</div>
+						</Link>
+					) : (
+						<div className='add-btn' >
+							<svg
+								xmlns='http://www.w3.org/2000/svg'
+								width='35'
+								height='35'
+								fill='currentColor'
+								class='bi bi-emoji-smile'
+								viewBox='0 0 16 16'
+							>
+								<path d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z' />
+								<path d='M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z' />
+							</svg>
+						</div>
+					)}
 				</div>
-				<div onClick={() => summonMssg()} id='msgbtn' className='add-btn'>
-					<svg
-						xmlns='http://www.w3.org/2000/svg'
-						width='35'
-						height='35'
-						fill='currentColor'
-						class='bi bi-mailbox'
-						viewBox='0 0 16 16'
-					>
-						<path d='M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3zm0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4zm2.646 1A3.99 3.99 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3H6.646z' />
-						<path d='M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146l-.853-.854zM5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0z' />
-					</svg>
-				</div>
-			</div>
+			)}
 			{/* Aqui comienza el cuadro emergente de NUEVO EVENTO que aparece al undir el boton '+' */}
 			<div id='newEventWindows' className='newEventWindows'>
 				<div className='addContent'>
