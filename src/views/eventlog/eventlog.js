@@ -16,6 +16,7 @@ export default function EventLog() {
 		evambiente: false,
 		evgenero: false,
 		evdeporte: false,
+		evjuventud: false,
 	});
 	const { messData, setMessData } = useState({});
 
@@ -131,11 +132,13 @@ export default function EventLog() {
 					evname: eventData.evname,
 					evfecha: eventData.evfecha,
 					evdescrip: eventData.evdescrip,
+					evUserEmail: userEmail,
 					cominvi: {
 						evsalud: eventData.evsalud,
 						evambiente: eventData.evambiente,
 						evgenero: eventData.evgenero,
 						evdeporte: eventData.evdeporte,
+						evjuventud: eventData.evjuventud,
 					},
 				},
 			};
@@ -143,7 +146,16 @@ export default function EventLog() {
 			//se envia la informacion
 			await axios
 				.post("http://localhost:3000/post/new_event", data)
-				.then((res) => console.log("respuestas: ", res));
+				.then((res) => {
+					if (res.data.status === true) {
+						alert("Evento agregado exitosamente");
+						closeEvent();
+					}
+					else{
+						alert("Error en el servidor, intente mas tarde");
+						closeEvent();
+					}
+				});
 		};
 
 		sendEvent();
@@ -240,7 +252,7 @@ export default function EventLog() {
 							</div>
 						</Link>
 					) : (
-						<div className='add-btn' >
+						<div className='add-btn'>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								width='35'
@@ -284,6 +296,7 @@ export default function EventLog() {
 								type='text'
 								name='evname'
 								onChange={(e) => handleEventForm(e)}
+								required
 							></input>
 						</div>
 						<div className='fecharow'>
@@ -292,6 +305,7 @@ export default function EventLog() {
 								type='date'
 								name='evfecha'
 								onChange={(e) => handleEventForm(e)}
+								required
 							></input>
 						</div>
 						<div className='fecharow'>
@@ -317,10 +331,10 @@ export default function EventLog() {
 									defaultChecked={false}
 									name='evambiente'
 									onChange={(e) => handleEventForm(e)}
-									id='salud'
+									id='ambiente'
 									type='checkbox'
 								></input>
-								<label className='labelcom' for='salud'>
+								<label className='labelcom' for='ambiente'>
 									Ambiente
 								</label>
 							</div>
@@ -330,10 +344,10 @@ export default function EventLog() {
 									defaultChecked={false}
 									name='evdeporte'
 									onChange={(e) => handleEventForm(e)}
-									id='salud'
+									id='deporte'
 									type='checkbox'
 								></input>
-								<label className='labelcom' for='salud'>
+								<label className='labelcom' for='deporte'>
 									Deporte
 								</label>
 							</div>
@@ -341,7 +355,7 @@ export default function EventLog() {
 								<input
 									className='inputcom'
 									defaultChecked={false}
-									name='evdeporte'
+									name='evjuventud'
 									onChange={(e) => handleEventForm(e)}
 									id='juventud'
 									type='checkbox'
@@ -356,10 +370,10 @@ export default function EventLog() {
 									defaultChecked={false}
 									name='evgenero'
 									onChange={(e) => handleEventForm(e)}
-									id='salud'
+									id='genero'
 									type='checkbox'
 								></input>
-								<label className='labelcom' for='salud'>
+								<label className='labelcom' for='genero'>
 									Genero
 								</label>
 							</div>
@@ -371,6 +385,7 @@ export default function EventLog() {
 							rows='5'
 							name='evdescrip'
 							onChange={(e) => handleEventForm(e)}
+							required
 						></textarea>
 						<div onClick={(e) => btnSubmit(e)} className='btnCont'>
 							<button> Agregar</button>

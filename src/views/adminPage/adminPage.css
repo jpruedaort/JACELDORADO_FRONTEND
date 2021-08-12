@@ -1,9 +1,6 @@
-.adminCont{
-    height: 100vh;
-
+.adminCont {
+	height: 100vh;
 }
-
-
 
 .background-events {
 	height: 50%;
@@ -60,7 +57,6 @@
 .navbar-events .info-events a {
 	text-decoration: none;
 	color: white;
-	
 }
 
 .table-events {
@@ -132,7 +128,7 @@
 	color: white;
 }
 
-.newEventWindows{
+.newEventWindows {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -144,47 +140,45 @@
 	border-top-right-radius: 20px;
 	border-bottom-right-radius: 20px;
 	border-bottom-left-radius: 20px;
-	background-color: rgba(255, 255, 255, .15);  
+	background-color: rgba(255, 255, 255, 0.15);
 	backdrop-filter: blur(8px);
 	min-width: 300px;
 	display: none;
 	opacity: 0;
 	transition: opacity 1s ease;
-	
 }
 
-.firstNewEventRow{
+.firstNewEventRow {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 }
 
-.closeBtn svg{
+.closeBtn svg {
 	position: absolute;
 	right: 0%;
-	top:0%;
+	top: 0%;
 	cursor: pointer;
 }
 
-.addContent{
+.addContent {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	height: 100%;
-	width:100%;
+	width: 100%;
 	padding: 10px;
 	min-width: 400px;
 }
 
-.addContent form{
+.addContent form {
 	padding: 4px;
 	width: 100%;
 	height: 100%;
 	flex-wrap: wrap;
-
 }
 
-.nomcol{
+.nomcol {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -194,23 +188,23 @@
 	align-items: center;
 }
 
-.nomcol h3{
+.nomcol h3 {
 	display: flex;
 	align-items: center;
 	text-align: center;
-	width:50%;
+	width: 50%;
 	font-size: 1.5rem;
 }
 
-.nomcol input{
-	width:40%;
+.nomcol input {
+	width: 40%;
 	height: 50%;
 	border-radius: 10px;
 	font-size: 1rem;
 	height: 2rem;
 }
 
-.fecharow{
+.fecharow {
 	margin-top: 2rem;
 	display: flex;
 	flex-direction: row;
@@ -218,25 +212,23 @@
 	height: 20%;
 	justify-content: space-between;
 	align-items: center;
-	
-	
 }
 
-.fecharow h3{
+.fecharow h3 {
 	display: flex;
 	align-items: center;
 	text-align: center;
-	width:1000%;
+	width: 1000%;
 	font-size: 1.5rem;
 }
 
-.fecharow input{
-	width:40%;
+.fecharow input {
+	width: 40%;
 	font-size: 1rem;
 	height: 50%;
 }
 
-.comiteSelect{
+.comiteSelect {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -246,26 +238,26 @@
 	flex-wrap: wrap;
 }
 
-.labelContainer{
+.labelContainer {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 }
 
-.inputcom{
+.inputcom {
 	height: 1.5rem;
 	width: 1.5rem;
 	margin: 0;
 }
 
-.labelcom{
+.labelcom {
 	font-size: 1.3rem;
 	margin: 0;
 	margin-left: 1rem;
 }
 
-.eventdes{
+.eventdes {
 	margin-top: 2rem;
 	display: flex;
 	flex-direction: row;
@@ -275,17 +267,17 @@
 	align-items: center;
 }
 
-.eventdes h3{
+.eventdes h3 {
 	width: 100%;
 	font-size: 1.5rem;
 }
 
-textarea{
+textarea {
 	width: 100%;
 	font-size: 1rem;
 }
 
-.btnCont{
+.btnCont {
 	width: 100%;
 	height: 3rem;
 	display: flex;
@@ -293,7 +285,7 @@ textarea{
 	justify-content: center;
 }
 
-.btnCont button{
+.btnCont button {
 	width: 50%;
 	height: 80%;
 	font-size: 1rem;
@@ -302,7 +294,7 @@ textarea{
 	transition: background-color 1s, color 1s;
 }
 
-.btnCont button:hover{
+.btnCont button:hover {
 	background-color: black;
 	color: white;
 }
@@ -311,11 +303,11 @@ h3 {
 	font-weight: bold;
 }
 
-#msgbtn{
-	top:55vh;
+#msgbtn {
+	top: 55vh;
 }
 
-.btnContainer{
+.btnContainer {
 	position: fixed;
 	width: 8rem;
 	height: 13rem;
@@ -327,22 +319,65 @@ h3 {
 	justify-content: space-around;
 }
 
-#newMessage{
+#newMessage {
 	display: none;
 }
 
-.searchby{
-    margin-top: 4rem;
+.searchby {
+	margin-top: 4rem;
 	margin-left: 1rem;
 	height: 20%;
 }
 
-td{
+td {
 	height: 0.5rem;
 	text-align: center;
 }
 
-.results{
+.results {
 	padding-left: 1rem;
 	padding-right: 1rem;
+	margin-top:6rem;
+}
+
+.comitePopup {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-height: 20rem;
+	min-width: 5rem;
+	border: solid;
+	background-color: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.comiteSelect {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.inputcom {
+	height: 1.5rem;
+	width: 1.5rem;
+	margin-left: 1rem;
+}
+
+.labelcom {
+	font-size: 1.3rem;
+	margin: 0;
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
