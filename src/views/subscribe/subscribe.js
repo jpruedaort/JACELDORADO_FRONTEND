@@ -40,7 +40,7 @@ export default function Subscribe() {
 
 	const handleSubmit=(e)=>{
 		e.preventDefault();
-		axios.post("http://localhost:3000/register",userdata)
+		axios.post("https://jaceldoradoserver.herokuapp.com/register",userdata)
 			.then(res=>{
 				console.log(res.data.Status);
 				if(res.data.Status) history.push("/");

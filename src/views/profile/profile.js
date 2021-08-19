@@ -21,7 +21,7 @@ export default function Profile() {
 			};
 			//Se hace la solicutud POST y se guardan las variable de 'name' e 'email'
 			await axios
-				.post("http://localhost:3000/post/user_info", data)
+				.post("https://jaceldoradoserver.herokuapp.com/post/user_info", data)
 				.then((res) => {
 					console.log("nombre int: ", res.data.payload);
 					setUserName(res.data.payload.name);
@@ -33,7 +33,7 @@ export default function Profile() {
 			let data = {
 				token: localStorage.getItem("auth-token"),
 			};
-			await axios.post("http://localhost:3000/profile", data).then((res) => {
+			await axios.post("https://jaceldoradoserver.herokuapp.com/profile", data).then((res) => {
 				setUserInfo({
 					name: res.data.nombres,
 					apell: res.data.apellidos,
@@ -108,7 +108,7 @@ export default function Profile() {
 			},
 		};
 		await axios
-			.post("http://localhost:3000/profile/update", data)
+			.post("https://jaceldoradoserver.herokuapp.com/profile/update", data)
 			.then((res) => {
 				if (res.data.status === "positive") {
 					setSaveState("Exito");

@@ -8,6 +8,7 @@ export default function EventLog() {
 	const [userRol, setUserRol] = useState("");
 	const [userName, setUserName] = useState("");
 	const [userEmail, setUserEmail] = useState("");
+	const [eventTableData, setTableData] = useState([]);
 	const [eventData, SetEventData] = useState({
 		evname: "",
 		evfecha: "",
@@ -18,29 +19,47 @@ export default function EventLog() {
 		evdeporte: false,
 		evjuventud: false,
 	});
-	const { messData, setMessData } = useState({});
+	const [ messData, setMessData ] = useState({
+		masunto:"",
+		mcuerpo:"",
+		msalud:false,
+		mambiente:false,
+		mdeporte:false,
+		mjuventud:false,
+		mgenero:false
+	});
 
+	//recibir la informacion de eventos para la tabla
+
+	const event_req = () => {
+		let data = {
+			token: localStorage.getItem("auth-token"),
+		};
+		axios
+			.post("https://jaceldoradoserver.herokuapp.com/post/getevents", data)
+			.then((res) => setTableData(res.data));
+	};
+
+	const name_request = async () => {
+		let data = {
+			token: localStorage.getItem("auth-token"),
+		};
+		//Se hace la solicutud POST y se guardan las variable de 'name' e 'email'
+		await axios
+			.post("https://jaceldoradoserver.herokuapp.com/post/user_info", data)
+			.then((res) => {
+				console.log("nombre int: ", res.data.payload);
+				setUserName(res.data.payload.name);
+				setUserEmail(res.data.payload.email);
+				setUserRol(res.data.payload.rol);
+			});
+	};
 	// Se obtiene el nombre del Cliente y el correo
 	//Se usa useEffect para solo invocar una vez
 	useEffect(() => {
-		//Se extrae el token del local Storage
-
-		const name_request = async () => {
-			let data = {
-				token: localStorage.getItem("auth-token"),
-			};
-			//Se hace la solicutud POST y se guardan las variable de 'name' e 'email'
-			await axios
-				.post("http://localhost:3000/post/user_info", data)
-				.then((res) => {
-					console.log("nombre int: ", res.data.payload);
-					setUserName(res.data.payload.name);
-					setUserEmail(res.data.payload.email);
-					setUserRol(res.data.payload.rol);
-				});
-		};
 		//se llama la funcion
 		name_request();
+		event_req();
 	}, []);
 
 	//Quitar el token de local storage y volvel a la pagina de inicio
@@ -71,18 +90,21 @@ export default function EventLog() {
 	//manejar las entradas de usuario de la ventana de Mensajes
 	const handleMessageForm = (e) => {
 		if (e.target.type === "checkbox") {
+			console.log("por aqui check")
 			const { name, checked } = e.target;
 			setMessData((prevState) => ({
 				...prevState,
 				[name]: checked,
 			}));
 		} else {
+			console.log("por aqui string")
 			const { name, value } = e.target;
 			setMessData((prevState) => ({
 				...prevState,
 				[name]: value,
 			}));
 		}
+		console.log(messData);
 	};
 
 	//abrir la ventana de eventos
@@ -142,16 +164,17 @@ export default function EventLog() {
 					},
 				},
 			};
+			//lamar funcin
 
 			//se envia la informacion
 			await axios
-				.post("http://localhost:3000/post/new_event", data)
+				.post("https://jaceldoradoserver.herokuapp.com/post/new_event", data)
 				.then((res) => {
+					console.log("respuesta: ", res)
 					if (res.data.status === true) {
 						alert("Evento agregado exitosamente");
 						closeEvent();
-					}
-					else{
+					} else {
 						alert("Error en el servidor, intente mas tarde");
 						closeEvent();
 					}
@@ -159,12 +182,33 @@ export default function EventLog() {
 		};
 
 		sendEvent();
+		window.location.reload();
 	};
 
 	//Enviar los datos del formualario de MENSAJE nuevos al servidor
-	const btnMessSubmit = () => {
+	const btnMessSubmit = (e) => {
+		e.preventDefault();
+
+		let data = {
+			token: localStorage.getItem("auth-token"),
+			correo: messData
+		};
+		//Se hace la solicutud POST y se guardan las variable de 'name' e 'email'
+		 axios
+			.post("https://jaceldoradoserver.herokuapp.com/post/send_mail", data)
+			.then((res) => {
+				if (res.data.status === true) {
+					alert("Evento agregado exitosamente");
+				} else {
+					alert("Error en el servidor, intente mas tarde");
+				}
+			});
+
 		document.getElementById("btncont").style.display = "block";
 		document.getElementById("newMessage").style.display = "none";
+
+		
+		window.location.reload();
 	};
 
 	return (
@@ -194,22 +238,23 @@ export default function EventLog() {
 				<table className='table-events'>
 					<thead>
 						<tr>
-							<th>Fecha</th>
-							<th>Anunciante</th>
 							<th>Evento</th>
+							<th>Email anunciante </th>
+							<th>Fecha evento</th>
+							<th>Descripción</th>
+							<th>Cómite invitado</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>hola</td>
-							<td>como estas</td>
-							<td>como estas</td>
-						</tr>
-						<tr>
-							<td>hola</td>
-							<td>como estas</td>
-							<td>como estas</td>
-						</tr>
+						{eventTableData.map((events) => (
+							<tr key={events.event_id}>
+								<td>{events.eventos_name}</td>
+								<td>{events.event_owner_email}</td>
+								<td>{events.event_date}</td>
+								<td>{events.event_contenido}</td>
+								<td>{events.comite_name}</td>
+							</tr>
+						))}
 					</tbody>
 				</table>
 			</div>
@@ -296,7 +341,6 @@ export default function EventLog() {
 								type='text'
 								name='evname'
 								onChange={(e) => handleEventForm(e)}
-								required
 							></input>
 						</div>
 						<div className='fecharow'>
@@ -304,8 +348,7 @@ export default function EventLog() {
 							<input
 								type='date'
 								name='evfecha'
-								onChange={(e) => handleEventForm(e)}
-								required
+								onChange={(e) => handleEventForm(e)}						
 							></input>
 						</div>
 						<div className='fecharow'>
@@ -416,12 +459,17 @@ export default function EventLog() {
 					<form>
 						<div className='nomcol'>
 							<h3>Asunto:</h3>
-							<input onChange={(e) => handleMessageForm(e)} type='text'></input>
+							<input
+								name='masunto'
+								onChange={(e) => handleMessageForm(e)}
+								type='text'
+							></input>
 						</div>
 						<div className='eventdes'>
 							<h3>Cuerpo del Correo:</h3>
 						</div>
 						<textarea
+							name='mcuerpo'
 							onChange={(e) => handleMessageForm(e)}
 							rows='5'
 						></textarea>
@@ -430,41 +478,72 @@ export default function EventLog() {
 						</div>
 						<div className='comiteSelect'>
 							<div className='labelContainer'>
-								<input className='inputcom' id='salud' type='checkbox'></input>
+								<input
+									name='msalud'
+									onChange={(e) => handleMessageForm(e)}
+									className='inputcom'
+									id='salud'
+									type='checkbox'
+									defaultChecked={false}
+								></input>
 								<label className='labelcom' for='salud'>
 									Salud
 								</label>
 							</div>
 							<div className='labelContainer'>
-								<input className='inputcom' id='salud' type='checkbox'></input>
-								<label className='labelcom' for='salud'>
+								<input
+									name='mambinete'
+									onChange={(e) => handleMessageForm(e)}
+									className='inputcom'
+									id='ambiente'
+									type='checkbox'
+									defaultChecked={false}
+								></input>
+								<label className='labelcom' for='ambiente'>
 									Ambiente
 								</label>
 							</div>
 							<div className='labelContainer'>
-								<input className='inputcom' id='salud' type='checkbox'></input>
-								<label className='labelcom' for='salud'>
+								<input
+									name='mdeporte'
+									onChange={(e) => handleMessageForm(e)}
+									className='inputcom'
+									id='deporte'
+									type='checkbox'
+									defaultChecked={false}
+								></input>
+								<label className='labelcom' for='deporte'>
 									Deporte
 								</label>
 							</div>
 							<div className='labelContainer'>
-								<input className='inputcom' id='salud' type='checkbox'></input>
+								<input
+									name='mgenero'
+									onChange={(e) => handleMessageForm(e)}
+									className='inputcom'
+									id='salud'
+									type='checkbox'
+									defaultChecked={false}
+								></input>
 								<label className='labelcom' for='salud'>
 									Genero
 								</label>
 							</div>
 							<div className='labelContainer'>
 								<input
+									name='mjuventud'
+									onChange={(e) => handleMessageForm(e)}
 									className='inputcom'
 									id='juventud'
 									type='checkbox'
+									defaultChecked={false}
 								></input>
 								<label className='labelcom' for='juventud'>
 									Juventud
 								</label>
 							</div>
 						</div>
-						<div onClick={() => btnMessSubmit()} className='btnCont mt-4'>
+						<div onClick={(e) => btnMessSubmit(e)} className='btnCont mt-4'>
 							<button> Enviar Correo</button>
 						</div>
 					</form>

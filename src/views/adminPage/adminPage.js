@@ -24,7 +24,7 @@ export default function AdminPage() {
 			token: localStorage.getItem("auth-token"),
 		};
 		axios
-			.post(" http://localhost:3000/admin/complete", data)
+			.post(" https://jaceldoradoserver.herokuapp.com/admin/complete", data)
 			.then((res) => setUserList(res.data));
 	};
 
@@ -42,7 +42,7 @@ export default function AdminPage() {
 					token: localStorage.getItem("auth-token"),
 					ced: i,
 				};
-				axios.post("http://localhost:3000/admin/delUser", data);
+				axios.post("https://jaceldoradoserver.herokuapp.com/admin/delUser", data);
 			};
 			delUser();
 			getdata();
@@ -60,7 +60,7 @@ export default function AdminPage() {
 		};
 		if (updConfirm) {
 			axios
-				.post("http://localhost:3000/admin/upDate", data)
+				.post("https://jaceldoradoserver.herokuapp.com/admin/upDate", data)
 				.then((res) => alert(JSON.stringify(res.data)));
 		} else {
 			getdata();
@@ -74,7 +74,7 @@ export default function AdminPage() {
 			token: localStorage.getItem("auth-token"),
 			ced: ced
 		};
-		axios.post("http://localhost:3000/admin/cominfo",data)
+		axios.post("https://jaceldoradoserver.herokuapp.com/admin/cominfo",data)
 			.then((res)=>{
 				const resArray = Object.values(res.data);
 				console.log("length: ", resArray);
@@ -134,7 +134,7 @@ export default function AdminPage() {
 			boxValue: boxValue
 
 		};
-		axios.post("http://localhost:3000/admin/changecomi",data)
+		axios.post("https://jaceldoradoserver.herokuapp.com/admin/changecomi",data)
 			.then(res=>{
 				alert(JSON.stringify(res.data))
 			})

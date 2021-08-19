@@ -26,7 +26,7 @@ export default function Landing() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axios
-			.post(" http://localhost:3000/auth/useravalidate", userData)
+			.post(" https://jaceldoradoserver.herokuapp.com/auth/useravalidate", userData)
 			.then((res) => {
 				console.log(res.data.accessToken);
 				console.log(res.data.authorized);
